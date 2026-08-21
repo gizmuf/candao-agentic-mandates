@@ -1,0 +1,32 @@
+name: Document profile proposal
+description: Propose a scoped change to document-execution semantics.
+title: "profile: "
+labels: [profile, discussion]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Concrete use case
+      description: Who authorizes what action, through which provider, and what must a verifier prove?
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Current gap
+      description: Explain why existing APOA fields or this profile cannot express it.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and upstream impact
+      description: State whether this belongs in this profile, APOA core, or another standard.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Security, privacy, and legal risks
+    validations:
+      required: true

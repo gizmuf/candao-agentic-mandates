@@ -1,0 +1,31 @@
+name: Interoperability report
+description: Share an implementation, adapter, or conformance result.
+title: "interop: "
+labels: [interoperability]
+body:
+  - type: input
+    id: implementation
+    attributes:
+      label: Implementation or adapter
+      placeholder: Public repository or product documentation URL
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Conformance role
+      options:
+        - Mandate issuer
+        - Agent policy gate
+        - E-sign provider adapter
+        - Receipt builder
+        - Independent verifier
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Fixtures, test results, and known deviations. Never include real documents or credentials.
+    validations:
+      required: true

@@ -1,50 +1,104 @@
-# Candao Agentic Mandates
+<p align="center">
+  <strong>Candao Agentic Mandates</strong><br>
+  Verifiable document execution for AI agents acting under explicit human authority.
+</p>
 
-An open document-execution profile for AI agents acting under explicit, bounded human authority.
+<p align="center">
+  <a href="https://github.com/gizmuf/candao-agentic-mandates/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/gizmuf/candao-agentic-mandates/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
+  <img alt="Status: working draft" src="https://img.shields.io/badge/status-working%20draft-f59e0b.svg">
+</p>
 
-The project does **not** replace electronic-signature providers and does not let an agent impersonate a person. It binds one final document, one approved action, one agent, and one execution receipt into an auditable flow.
+AI agents can prepare a document, but the final execution step is often manual or performed with overly broad borrowed credentials. Candao Agentic Mandates defines a narrower path:
 
 ```text
-final document -> human approval -> APOA mandate -> agent execution -> receipt
+final document -> human approval -> bounded APOA mandate -> agent execution -> receipt
 ```
 
-## Why this exists
+The human remains the principal. The agent is a distinct, visible actor. Approval binds one final document hash, one action, one destination, one provider, and one time window. The resulting receipt shows what was authorized and what actually happened.
 
-Agents can draft and prepare documents, but the final execution step is usually either manual or performed with broad borrowed credentials. Candao Agentic Mandates explores a narrower model:
+## Why this matters
 
-- the human remains the principal;
-- the agent is identified as the actor;
-- authority is limited to a document hash, action, recipient, provider, and time window;
-- approval and execution are separate evidence objects;
-- credentials remain outside the model context;
-- every mutation is auditable and idempotent.
+- **No impersonation:** the agent never pretends to be the human.
+- **No private-key handoff:** principal credentials stay outside the model context.
+- **Exact intent:** approval is invalid if the document or execution parameters change.
+- **Bounded authority:** scopes, expiry, revocation, confirmation, and idempotency are enforceable.
+- **Portable evidence:** a verifier can inspect the mandate, approval, and receipt independently.
+- **Provider compatibility:** existing e-sign platforms remain the execution rail.
 
 ## Relationship to APOA
 
-This repository is an independent, Apache-2.0-licensed interoperability profile built to work with [Agentic Power of Attorney (APOA)](https://github.com/agenticpoa/apoa). It reuses APOA's authorization envelope and adds document-execution semantics under namespaced metadata and service scopes.
+This is an independent interoperability profile built to work with [Agentic Power of Attorney (APOA)](https://github.com/agenticpoa/apoa). We reuse APOA's authorization envelope—principal, agent, scopes, constraints, expiry, revocation, and audit—and add document-execution semantics.
 
-We intend to contribute generic interoperability improvements upstream instead of forking APOA core.
+Our preferred strategy is to contribute generic improvements upstream rather than fork APOA core. See the [compatibility plan](docs/UPSTREAM-APOA.md).
 
-## Status
+## Architecture
 
-`v0.1 working draft` — research and prototype only. Not a legal opinion, qualified electronic signature, or production authorization system.
+```text
+Principal device      Authorization layer      Agent runtime      E-sign provider
+----------------      -------------------      -------------      ---------------
+review final bundle -> signed APOA mandate --> policy gate -----> exact submission
+passkey approval       hash + scope + expiry    vault isolation    provider evidence
+       ^                        |                      |                   |
+       +------------------------+--- verifier <-------+-------------------+
+                                   mandate + approval + execution receipt
+```
 
-## Start here
+Open the exportable [architecture diagram](diagrams/document-execution.html) or read the [architecture notes](docs/ARCHITECTURE.md).
 
-- [RFC 0001](docs/RFC-0001-DOCUMENT-EXECUTION-PROFILE.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Cost-aware agent workflow](docs/COST-CONTROL.md)
-- [Roadmap and go/no-go gates](docs/ROADMAP.md)
-- [Contributing](CONTRIBUTING.md)
+## Current implementation
 
-Run the dependency-free checks:
+- RFC for an APOA-compatible document execution profile;
+- normative example mandate;
+- dependency-free profile verifier;
+- negative tests for missing confirmation, malformed hashes, and delegation;
+- task/result manifests and content-addressed artifact cache for cost-aware agent maintenance;
+- public governance, security, adoption, and contribution paths.
+
+This is a `v0.1 working draft`. It is research and prototype software—not a legal opinion, qualified electronic signature, production authorization service, or claim of legal validity.
+
+## Quick start
+
+Requirements: Node.js 20 or newer.
 
 ```bash
+git clone https://github.com/gizmuf/candao-agentic-mandates.git
+cd candao-agentic-mandates
 npm test
 npm run verify:example
 ```
 
-## MVP
+The project has no runtime dependencies at this stage.
 
-The first end-to-end target is deliberately narrow: an agent prepares an NDA, the principal approves the exact PDF with a passkey-capable flow, the agent submits it through an existing e-sign provider, and a verifier checks the mandate and execution receipt.
+## How to contribute
+
+We are looking for contributors in:
+
+- authorization, OAuth, DIDs, verifiable credentials, and passkeys;
+- e-signature and document-workflow integrations;
+- security, threat modeling, audit, and policy engines;
+- legal-tech and jurisdiction-specific research;
+- MCP/A2A agent tooling and conformance testing;
+- developer experience and independent implementations.
+
+Start with [Contributing](CONTRIBUTING.md), the [adoption guide](docs/ADOPTION.md), or a scoped GitHub issue. Generic APOA improvements should be discussed upstream first.
+
+## Roadmap
+
+1. **Verifier-first profile:** deterministic fixtures and negative tests.
+2. **One NDA flow:** exact PDF, explicit approval, sandbox execution, receipt.
+3. **Three design partners:** legal practice, document-heavy business, UAE innovation partner.
+4. **Ecosystem decision:** upstream profile, neutral group, or hosted services around the open standard.
+
+The full roadmap includes explicit [GO/STOP gates](docs/ROADMAP.md).
+
+## Maintainer operations
+
+The repository uses bounded agent tasks, deterministic artifacts, stable prompt prefixes, delta handoffs, and a cost ledger. See [Cost-aware agent workflow](docs/COST-CONTROL.md) and [Codex maintenance plan](docs/CODEX-MAINTENANCE.md).
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+Candao Agentic Mandates is not endorsed by APOA, DocuSign, Adobe, PandaDoc, OpenAI, or any standards body mentioned in project materials.
 
