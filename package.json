@@ -1,0 +1,17 @@
+{
+  "name": "@candao/agentic-mandates",
+  "version": "0.1.0-draft.0",
+  "private": true,
+  "type": "module",
+  "description": "APOA-compatible document execution profile for bounded AI-agent authority",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "verify:example": "node scripts/verify-profile.mjs examples/nda-mandate.json",
+    "cache:key": "node scripts/cache-key.mjs",
+    "cache:demo": "node scripts/cache-demo.mjs"
+  }
+}

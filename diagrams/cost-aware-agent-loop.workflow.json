@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cost-aware Agent Loop",
+    "subtitle": "Bounded delegation, deterministic artifact reuse, measurable spend",
+    "output": "diagrams/cost-aware-agent-loop.html"
+  },
+  "lanes": [
+    { "id": "coord", "label": "Coordinator" },
+    { "id": "cache", "label": "Artifact Cache + Ledger" },
+    { "id": "worker", "label": "Bounded Worker" },
+    { "id": "stop", "label": "Stop / Escalation", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "shape", "label": "Shape", "fromCol": 0, "toCol": 1 },
+    { "id": "reuse", "label": "Reuse", "fromCol": 2, "toCol": 3, "variant": "dashed" },
+    { "id": "execute", "label": "Execute + accept", "fromCol": 4, "toCol": 5, "variant": "emphasis" }
+  ],
+  "groups": [
+    { "id": "cache_gate", "label": "Content-addressed reuse", "lane": "cache", "fromCol": 2, "toCol": 5, "variant": "dashed" },
+    { "id": "bounded_work", "label": "One task / one owner", "lane": "worker", "fromCol": 3, "toCol": 5, "variant": "emphasis" },
+    { "id": "hard_stops", "label": "No blind retries", "lane": "stop", "fromCol": 4, "toCol": 5, "variant": "security" }
+  ],
+  "nodes": [
+    { "id": "objective", "lane": "coord", "col": 0, "type": "external", "label": "Objective", "sublabel": "user outcome" },
+    { "id": "normalize", "lane": "coord", "col": 1, "type": "backend", "label": "Normalize", "sublabel": "scope + dedupe" },
+    { "id": "manifest", "lane": "coord", "col": 3, "type": "frontend", "label": "Task Manifest", "sublabel": "paths + budget" },
+    { "id": "accept", "lane": "coord", "col": 5, "type": "security", "label": "Accept", "sublabel": "evidence gate", "tag": "coordinator owns", "width": 100 },
+    { "id": "lookup", "lane": "cache", "col": 2, "type": "database", "label": "Cache Lookup", "sublabel": "input hashes" },
+    { "id": "artifact", "lane": "cache", "col": 5, "type": "database", "label": "Cost Ledger", "sublabel": "artifact + provenance", "width": 100 },
+    { "id": "dispatch", "lane": "worker", "col": 3, "type": "messagebus", "label": "Delta Handoff", "sublabel": "no full history" },
+    { "id": "execute", "lane": "worker", "col": 5, "type": "backend", "label": "Worker", "sublabel": "small adequate model", "tag": "bounded output", "width": 110 },
+    { "id": "budget", "lane": "stop", "col": 4, "type": "security", "label": "Hard Stop", "sublabel": "budget or risk", "width": 92 },
+    { "id": "blocked", "lane": "stop", "col": 5, "type": "external", "label": "Human Gate", "sublabel": "authority needed", "width": 100 }
+  ],
+  "edges": [
+    { "from": "objective", "to": "normalize", "variant": "emphasis" },
+    { "from": "normalize", "to": "lookup", "label": "cache key", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "route": "drop" },
+    { "from": "lookup", "to": "manifest", "label": "miss", "variant": "default", "fromSide": "top", "toSide": "bottom", "route": "drop" },
+    { "from": "lookup", "to": "accept", "label": "valid hit", "variant": "dashed", "fromSide": "top", "toSide": "bottom", "route": "up-channel", "labelDx": 18 },
+    { "from": "manifest", "to": "dispatch", "label": "bounded brief", "variant": "emphasis", "fromSide": "bottom", "toSide": "top", "route": "drop", "labelDx": 45 },
+    { "from": "dispatch", "to": "execute", "variant": "emphasis" },
+    { "from": "execute", "to": "accept", "variant": "emphasis", "fromSide": "top", "toSide": "bottom", "route": "return-left" },
+    { "from": "execute", "to": "budget", "variant": "security", "role": "error", "fromSide": "bottom", "toSide": "top", "route": "drop" },
+    { "from": "budget", "to": "blocked", "variant": "security" },
+    { "from": "accept", "to": "artifact", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "route": "drop" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Billed-token reducers", "items": ["Stable prompt prefix", "No full-history forwarding", "Content-addressed reuse", "Early stop + retry caps"] },
+    { "dot": "emerald", "title": "Control", "items": ["Coordinator deduplicates work", "Workers own one bounded task", "Unknown usage stays unknown", "Every artifact carries provenance"] }
+  ]
+}

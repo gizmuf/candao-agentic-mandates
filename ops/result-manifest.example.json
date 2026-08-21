@@ -1,0 +1,20 @@
+{
+  "task_id": "TASK-0001",
+  "status": "complete",
+  "cache_key": "sha256:replace-with-computed-key",
+  "cacheable": true,
+  "evidence": ["examples/nda-mandate.json", "docs/RFC-0001-DOCUMENT-EXECUTION-PROFILE.md"],
+  "changed_paths": [],
+  "uncertainty": [],
+  "usage": {
+    "model": "unknown",
+    "input_tokens": "unknown",
+    "cached_input_tokens": "unknown",
+    "output_tokens": "unknown",
+    "tool_calls": 0,
+    "retries": 0,
+    "elapsed_seconds": "unknown"
+  },
+  "next_action": "none"
+}
+

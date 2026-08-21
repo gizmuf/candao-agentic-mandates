@@ -1,0 +1,21 @@
+{
+  "task_id": "TASK-0001",
+  "prompt_version": "worker-v1",
+  "objective": "Check the document profile fixture against RFC 0001",
+  "scope": {
+    "read": ["docs/RFC-0001-DOCUMENT-EXECUTION-PROFILE.md", "examples/nda-mandate.json"],
+    "write": []
+  },
+  "dependencies": [],
+  "expected_output": "result manifest with exact mismatches",
+  "acceptance": ["all normative mismatches cite a JSON path and RFC section"],
+  "budget": {
+    "max_output_words": 400,
+    "max_tool_calls": 4,
+    "max_retries": 0,
+    "max_minutes": 10
+  },
+  "stop_on": ["acceptance_met", "duplicate_cache_hit", "missing_authority", "budget_exhausted"],
+  "cache": { "mode": "read-write", "ttl_seconds": 86400 }
+}
+

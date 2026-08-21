@@ -1,0 +1,45 @@
+{
+  "iss": "https://issuer.example.test",
+  "aud": ["candao-document-execution"],
+  "iat": 1787310000,
+  "exp": 1787310900,
+  "jti": "apoa-token-demo-nda-0001",
+  "definition": {
+    "principal": { "id": "did:web:example.test:principals:robert" },
+    "agent": { "id": "did:key:zDemoAgentKey", "name": "Candao Document Agent" },
+    "agentProvider": { "name": "Candao" },
+    "services": [
+      {
+        "service": "candao-document-execution",
+        "scopes": ["documents:read", "documents:submit"],
+        "constraints": {
+          "require_confirmation": ["documents:submit"],
+          "data_export": true,
+          "rate_limit": { "max": 1, "period": "15m" }
+        },
+        "accessMode": "api"
+      }
+    ],
+    "rules": [
+      {
+        "id": "exact-document-only",
+        "description": "Submit only the document whose SHA-256 hash is bound to the approval evidence",
+        "enforcement": "hard"
+      }
+    ],
+    "revocable": true,
+    "delegatable": false,
+    "expires": "2026-08-21T12:15:00Z",
+    "metadata": {
+      "candao_profile": "document-execution/0.1",
+      "candao_document_id": "nda-demo-001",
+      "candao_document_version": "final-1",
+      "candao_content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "candao_execution_id": "exec-demo-0001",
+      "candao_approval_ref": "approval://demo/passkey/assertion-0001",
+      "candao_idempotency_key": "idem-demo-nda-0001",
+      "candao_output_ref": "pending"
+    }
+  }
+}
+

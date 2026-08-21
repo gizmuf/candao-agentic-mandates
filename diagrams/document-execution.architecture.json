@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Verifiable Document Execution",
+    "subtitle": "Human intent, bounded agent authority, exact execution, independent evidence",
+    "output": "diagrams/document-execution.html"
+  },
+  "components": [
+    { "id": "principal", "type": "external", "label": "Principal", "sublabel": "reviews exact bundle", "pos": [40, 300], "size": [130, 64] },
+    { "id": "bundle", "type": "frontend", "label": "Bundle Builder", "sublabel": "PDF hash + parameters", "pos": [230, 300], "size": [140, 64] },
+    { "id": "approval", "type": "security", "label": "Approval UI", "sublabel": "passkey-capable proof", "pos": [430, 110], "size": [140, 64], "tag": "human decision" },
+    { "id": "issuer", "type": "security", "label": "APOA Issuer", "sublabel": "signed bounded mandate", "pos": [430, 300], "size": [140, 64] },
+    { "id": "policy", "type": "security", "label": "Policy Gate", "sublabel": "hash + scope + expiry", "pos": [630, 300], "size": [140, 64], "tag": "before mutation" },
+    { "id": "vault", "type": "database", "label": "Credential Vault", "sublabel": "outside model context", "pos": [830, 110], "size": [140, 64] },
+    { "id": "agent", "type": "backend", "label": "Agent Runtime", "sublabel": "distinct actor identity", "pos": [830, 300], "size": [140, 64] },
+    { "id": "provider", "type": "external", "label": "E-sign Provider", "sublabel": "sandbox / adapter", "pos": [1030, 300], "size": [140, 64] },
+    { "id": "receipt", "type": "messagebus", "label": "Receipt Builder", "sublabel": "mandate + action proof", "pos": [830, 500], "size": [140, 64] },
+    { "id": "verifier", "type": "backend", "label": "Verifier", "sublabel": "machine + human result", "pos": [430, 500], "size": [140, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Candao document-execution profile", "wraps": ["bundle", "approval", "issuer", "policy", "verifier"] },
+    { "kind": "security-group", "label": "Agent runtime boundary", "wraps": ["vault", "agent", "receipt"] }
+  ],
+  "connections": [
+    { "from": "principal", "to": "bundle", "label": "review", "variant": "emphasis", "labelAt": [200, 285] },
+    { "from": "bundle", "to": "approval", "label": "final bundle", "variant": "security", "fromSide": "top", "toSide": "left", "route": "orthogonal-v", "labelAt": [375, 205] },
+    { "from": "approval", "to": "issuer", "label": "approval proof", "variant": "security", "fromSide": "bottom", "toSide": "top", "labelAt": [505, 240] },
+    { "from": "issuer", "to": "policy", "label": "APOA mandate", "variant": "emphasis", "labelAt": [600, 285] },
+    { "from": "policy", "to": "agent", "label": "authorized action", "variant": "emphasis", "labelAt": [800, 285] },
+    { "from": "vault", "to": "agent", "label": "injected credential", "variant": "security", "fromSide": "bottom", "toSide": "top", "labelAt": [905, 240] },
+    { "from": "agent", "to": "provider", "label": "exact submit", "variant": "emphasis", "labelAt": [1000, 285] },
+    { "from": "provider", "to": "receipt", "label": "provider evidence", "variant": "dashed", "fromSide": "bottom", "toSide": "right", "route": "orthogonal-v", "labelAt": [1100, 435] },
+    { "from": "agent", "to": "receipt", "label": "action log", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [905, 435] },
+    { "from": "receipt", "to": "verifier", "label": "execution receipt", "variant": "emphasis", "labelAt": [700, 485] },
+    { "from": "issuer", "to": "verifier", "label": "mandate + JWKS", "variant": "security", "fromSide": "bottom", "toSide": "top", "labelAt": [505, 435] }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Authority", "items": ["Principal stays the decision maker", "Agent never receives principal private key", "Submit scope requires exact approval"] },
+    { "dot": "cyan", "title": "Interoperability", "items": ["APOA authorization envelope", "Provider-specific adapters", "Independent verifier consumes evidence"] },
+    { "dot": "emerald", "title": "MVP boundary", "items": ["One NDA flow", "Mock or provider sandbox", "No production legal execution", "No blockchain dependency"] }
+  ]
+}

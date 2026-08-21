@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://candao.example/schemas/document-execution-profile-0.1.json",
+  "title": "Candao Document Execution Profile metadata",
+  "type": "object",
+  "required": [
+    "candao_profile",
+    "candao_document_id",
+    "candao_document_version",
+    "candao_content_hash",
+    "candao_execution_id",
+    "candao_approval_ref",
+    "candao_idempotency_key"
+  ],
+  "properties": {
+    "candao_profile": { "const": "document-execution/0.1" },
+    "candao_document_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "candao_document_version": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "candao_content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "candao_execution_id": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "candao_approval_ref": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "candao_idempotency_key": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "candao_output_ref": { "type": "string", "maxLength": 500 }
+  },
+  "additionalProperties": true
+}
+
