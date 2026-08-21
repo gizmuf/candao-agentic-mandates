@@ -1,0 +1,35 @@
+name: Verifier or fixture bug
+description: Report deterministic profile, fixture, or verifier behavior.
+title: "bug: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach real documents, credentials, private keys, personal data, or production receipts.
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: Include the exact command and sanitized output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Cite the RFC section when possible.
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Commit or version
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: This report contains no secrets, private documents, or personal data.
+          required: true

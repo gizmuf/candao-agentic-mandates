@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: Candao Agentic Mandates
+message: If this profile informs your implementation or research, please cite this repository.
+type: software
+authors:
+  - name: Candao Contributors
+repository-code: https://github.com/gizmuf/candao-agentic-mandates
+url: https://github.com/gizmuf/candao-agentic-mandates
+license: Apache-2.0
+version: 0.1.0-draft.0
+date-released: 2026-08-21
+keywords:
+  - AI agents
+  - delegated authority
+  - document execution
+  - agent authorization
+  - APOA
