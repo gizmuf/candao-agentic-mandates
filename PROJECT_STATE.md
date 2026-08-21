@@ -5,8 +5,9 @@
 - Host: `codex-vps`
 - Path: `/home/codex/workspace/repos/candao-agentic-mandates`
 - Branch: `main`
-- Status: clean initial commit `0fa2282b1ebe9cdea31efa5c003f4a73ec1b803e`
-- Remote origin: not configured
+- Status: clean, tracking `origin/main`
+- Remote origin: `git@github.com:gizmuf/candao-agentic-mandates.git`
+- Public repository: `https://github.com/gizmuf/candao-agentic-mandates`
 
 The VPS repository is the canonical write surface. The original local conversation folder is staging/reference only after VPS task ownership is established.
 
